@@ -1,0 +1,262 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  /* surfaces */
+  --bg: #0a0c10;
+  --surface: #14171d;
+  --surface-2: #1c2028;
+  --border: #262b34;
+
+  /* signature + status */
+  --accent: #c9a24b;
+  --accent-dim: #8a7238;
+  --fulfilled: #34c77b;
+  --breached: #e5484d;
+  --partial: #e8a33d;
+  --ink: #8da9c4;
+
+  /* text */
+  --text-1: #f2f0ea;
+  --text-2: #a6a9b2;
+  --text-3: #6e727c;
+
+  /* type */
+  --font-display: "Fraunces", serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  /* radius */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-body);
+}
+
+body {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 20px 96px;
+  width: 100%;
+}
+
+/* desktop sidebar / mobile bottom nav split */
+.sidebar {
+  display: none;
+}
+
+.bottom-nav {
+  display: flex;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    display: flex;
+  }
+  .bottom-nav {
+    display: none;
+  }
+  .app-content {
+    padding-bottom: 24px;
+  }
+}
+
+/* verdict + brief title display type */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.verdict-word {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 40px;
+  letter-spacing: -0.01em;
+}
+
+.verdict-word.fulfilled {
+  color: var(--fulfilled);
+}
+.verdict-word.breached {
+  color: var(--breached);
+}
+.verdict-word.partial {
+  color: var(--partial);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.text-secondary {
+  color: var(--text-2);
+}
+
+.text-muted {
+  color: var(--text-3);
+}
+
+/* card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 20px;
+}
+
+/* -------------------------------------------------------------- */
+/* signature element: the wax seal                                 */
+/* Unsigned/draft: no seal. Locked: solid seal stamped on card.     */
+/* Resolved: seal cracks apart to reveal the verdict underneath.    */
+/* -------------------------------------------------------------- */
+
+.seal {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--accent), var(--accent-dim));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.seal-mark {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--bg);
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.seal.cracked {
+  background: none;
+}
+
+.seal.cracked::before,
+.seal.cracked::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 44px;
+  background: radial-gradient(circle at 35% 30%, var(--accent), var(--accent-dim));
+  top: 0;
+}
+
+.seal.cracked::before {
+  left: 0;
+  border-radius: 22px 0 0 22px;
+  transform: rotate(-6deg) translateX(-3px);
+}
+
+.seal.cracked::after {
+  right: 0;
+  border-radius: 0 22px 22px 0;
+  transform: rotate(6deg) translateX(3px);
+}
+
+/* status pill */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  color: var(--text-2);
+}
+
+.status-pill.fulfilled {
+  color: var(--fulfilled);
+  border-color: var(--fulfilled);
+}
+.status-pill.breached {
+  color: var(--breached);
+  border-color: var(--breached);
+}
+.status-pill.partial {
+  color: var(--partial);
+  border-color: var(--partial);
+}
+.status-pill.locked {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* primary button */
+.btn-primary {
+  background: var(--accent);
+  color: #1a1405;
+  border: none;
+  border-radius: var(--r-sm);
+  padding: 12px 20px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 12px 20px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input,
+textarea {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 12px 14px;
+  width: 100%;
+}
+
+input:focus,
+textarea:focus {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
