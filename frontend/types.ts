@@ -49,10 +49,9 @@ export interface Profile {
   as_client: ClientStats;
 }
 
-export interface Account {
-  privateKey: `0x${string}`;
-  address: `0x${string}`;
-}
+import type { createAccount } from "genlayer-js";
+
+export type Account = ReturnType<typeof createAccount>;
 
 export type Screen =
   | "landing"

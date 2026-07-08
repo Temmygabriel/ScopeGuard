@@ -1,5 +1,6 @@
 import { createAccount, createClient } from "genlayer-js";
 import { studionet } from "genlayer-js/chains";
+import { TransactionStatus } from "genlayer-js/types";
 import type { Account, Brief, Profile } from "../types";
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`;
@@ -9,16 +10,18 @@ const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string
 // ---------------------------------------------------------------------
 
 export function makeAccount(privateKey?: `0x${string}`): Account {
-  const account = privateKey ? createAccount(privateKey) : createAccount();
-  return { privateKey: account.privateKey, address: account.address };
+  return privateKey ? createAccount(privateKey) : createAccount();
 }
 
 function getClient(account?: Account) {
   return createClient({
     chain: studionet,
-    account: account
-      ? ({ address: account.address, privateKey: account.privateKey } as any)
-      : undefined,
+    // pass the real account object through untouched — it carries the
+    // signing capability the SDK needs. Reconstructing a plain
+    // { address, privateKey } copy here was the bug: the SDK treated it
+    // like an external-wallet reference and tried a raw
+    // eth_sendTransaction, which GenLayer's node doesn't implement.
+    account,
   });
 }
 
@@ -37,10 +40,11 @@ async function write(account: Account, functionName: string, args: any[] = []) {
     address: CONTRACT_ADDRESS,
     functionName,
     args,
+    value: 0,
   });
   return client.waitForTransactionReceipt({
     hash: txHash,
-    status: "FINALIZED",
+    status: TransactionStatus.FINALIZED,
   });
 }
 
