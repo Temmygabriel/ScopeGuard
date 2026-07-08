@@ -10,9 +10,7 @@ const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string
 // ---------------------------------------------------------------------
 
 export function makeAccount(privateKey?: `0x${string}`): Account {
-  const acc = privateKey ? createAccount(privateKey) : createAccount();
-  console.log("ACCOUNT SHAPE:", JSON.stringify(acc), Object.keys(acc));
-  return acc;
+  return privateKey ? createAccount(privateKey) : createAccount();
 }
 
 function getClient(account?: Account) {
